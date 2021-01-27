@@ -29,7 +29,10 @@ const imagesStyles = {
   },
   imgCard: {
     width: "100%",
-    borderRadius: "calc(.25rem - 1px)"
+    borderRadius: "calc(.25rem - 1px)",
+    marginTop : "5%",
+    marginBottom : "5%",
+    marginLeft : "-3%",
   },
   imgCardOverlay: {
     position: "absolute",

@@ -23,15 +23,27 @@ import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
 import image from "assets/img/bgmakeup.jpg";
 
+import { useHistory } from "react-router-dom";
+
 const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-  setTimeout(function() {
+  const [email, setEmail] = React.useState("");
+  const [senha, setSenha] = React.useState("");
+  const history = useHistory();
+  setTimeout(function () {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
+
+  const login = async () => {
+    if (email === "julioomuller@gmail.com" && senha === "123456")
+      history.push("/home")
+  }
+
+
   return (
     <div>
       <Header
@@ -39,6 +51,7 @@ export default function LoginPage(props) {
         color="transparent"
         brand="VIP MAKEUP"
         rightLinks={<HeaderLinks />}
+        rota="/home"
         {...rest}
       />
       <div
@@ -70,11 +83,13 @@ export default function LoginPage(props) {
                           <InputAdornment position="end">
                             <Email className={classes.inputIconsColor} />
                           </InputAdornment>
-                        )
+                        ),
+                        value: email,
+                        onChange: (e) => { setEmail(e.target.value) }
                       }}
                     />
                     <CustomInput
-                      labelText="Password"
+                      labelText="Senha"
                       id="pass"
                       formControlProps={{
                         fullWidth: true
@@ -88,12 +103,19 @@ export default function LoginPage(props) {
                             </Icon>
                           </InputAdornment>
                         ),
-                        autoComplete: "off"
+                        autoComplete: "off",
+                        value: senha,
+                        onChange: (e) => { setSenha(e.target.value) },
+                        onKeyDown:(e) => {
+                          debugger
+                          if(e.key === "Enter")
+                            login()
+                        }
                       }}
                     />
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
-                    <Button simple color="primary" size="lg">
+                    <Button simple color="primary" size="lg" onClick={login}>
                       Login
                     </Button>
                     <Button simple color="primary" size="lg">
