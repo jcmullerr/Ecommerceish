@@ -129,7 +129,7 @@ export default function HomePage(props) {
                       className: navClasss.formControl
                     }}
                     inputProps={{
-                      placeholder: "Search",
+                      placeholder: "Pesquisar",
                       inputProps: {
                         "aria-label": "Search",
                         className: navClasss.searchInput
@@ -137,7 +137,7 @@ export default function HomePage(props) {
                     }}
                   />
                   <Button justIcon round color="white">
-                    <Search className={navClasss.searchIcon} />
+                    <Search className={navClasss.searchIconLight} />
                   </Button>
                 </div>
               }

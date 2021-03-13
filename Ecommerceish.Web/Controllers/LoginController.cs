@@ -1,20 +1,23 @@
-﻿using System;
+using Ecommerceish.Web.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+
 namespace Ecommerceish.Web.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    [Route("api/[controller]")]
+    public class LoginController : ControllerBase
     {
-        public WeatherForecastController(){}
+        public LoginController()
+        { }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel loginObj)
         {
             return Ok();
         }

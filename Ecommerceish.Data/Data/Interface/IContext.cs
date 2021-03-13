@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Ecommerceish.DataModel.Models;
-using Ecommerceish.DataModel.Models.Base;
 using Microsoft.EntityFrameworkCore;
+using Ecommerceish.Domain.Entities.Base;
 
 namespace Ecommerceish.Data.Data.Interface
 {
@@ -10,6 +9,5 @@ namespace Ecommerceish.Data.Data.Interface
     {
         DbSet<T> GetRepository<T>() where T : BaseModel, new();
         Task<int> SaveChanges(CancellationToken cancellationToken = default(CancellationToken));
-        DbSet<Produto> Produtos{get;set;}
     }
 }

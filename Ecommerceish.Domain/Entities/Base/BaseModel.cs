@@ -1,5 +1,6 @@
 using System;
-namespace Ecommerceish.DataModel.Models.Base
+
+namespace Ecommerceish.Domain.Entities.Base
 {
     public class BaseModel
     {

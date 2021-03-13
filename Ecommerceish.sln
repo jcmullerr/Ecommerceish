@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerceish.Web", "Ecommerceish.Web\Ecommerceish.Web.csproj", "{693CC618-9F91-4BAD-979F-028615107872}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerceish.Data", "Ecommerceish.Data\Ecommerceish.Data.csproj", "{0A996BAF-4065-4674-9D1F-072ADDD52C1F}"
 EndProject
 Global
