@@ -1,13 +1,13 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Ecommerceish.Domain.Entities.Base;
+using Microsoft.EntityFrameworkCore;
 
-namespace Ecommerceish.Data.Data.Interface
+namespace Ecommerceish.Domain.Interfaces.Data
 {
     public interface IContext
     {
-        DbSet<T> GetRepository<T>() where T : BaseModel, new();
+        DbSet<T> GetDbSet<T>() where T : BaseModel, new();
         Task<int> SaveChanges(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

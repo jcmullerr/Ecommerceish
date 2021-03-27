@@ -1,11 +1,10 @@
-using Ecommerceish.Web.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-
+using Microsoft.AspNetCore.Authorization;
+using Ecommerceish.Domain.DomainServices;
+using Ecommerceish.Domain.Entities.Seguranca;
+using Ecommerceish.Domain.Command;
+using MediatR;
 
 namespace Ecommerceish.Web.Controllers
 {
@@ -13,11 +12,23 @@ namespace Ecommerceish.Web.Controllers
     [Route("api/[controller]")]
     public class LoginController : ControllerBase
     {
-        public LoginController()
-        { }
+        private readonly IMediator  _mediator;
+
+        public LoginController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel loginObj)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody]LoginCommand loginCommand)
+        {
+            var token = await _mediator.Send(loginCommand);
+            return Ok(new {token});
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> teste()
         {
             return Ok();
         }

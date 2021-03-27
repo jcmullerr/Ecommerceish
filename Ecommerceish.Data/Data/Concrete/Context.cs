@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ecommerceish.Data.Data.Interface;
 using Ecommerceish.Domain.Entities.Base;
+using Ecommerceish.Domain.Interfaces.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerceish.Data.Data.Concrete
@@ -12,7 +12,7 @@ namespace Ecommerceish.Data.Data.Concrete
     {
         public Context(DbContextOptions<Context> options) : base(options){}
 
-        public DbSet<T> GetRepository<T>() where T : BaseModel, new()
+        public DbSet<T> GetDbSet<T>() where T : BaseModel, new()
         {
             Type type = this.GetType();
             Type repositoryType = typeof(DbSet<>).MakeGenericType(typeof(T));

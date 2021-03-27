@@ -1,15 +1,13 @@
-using Ecommerceish.Data.Data.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Ecommerceish.CrossCutting.Extensions;
+using Ecommerceish.CrossCutting.Extensions.Injection;
+using MediatR;
+using System;
 
 namespace Ecommerceish.Web
 {
@@ -27,27 +25,12 @@ namespace Ecommerceish.Web
         {
 
             services.AddControllersWithViews();
-            services.AddDbContext<Context>(x => x.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddContext(Configuration);
+            services.AddDependencies();
+            services.AddAuthentication(Configuration);
 
-            var key =  Encoding.ASCII.GetBytes(Configuration.GetSection("Auth").GetValue<string>("Secret"));
-            
-            services.AddAuthentication(x => 
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x => 
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+            var assembly = AppDomain.CurrentDomain.Load("Ecommerceish.Web");
+            services.AddMediatR(assembly);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

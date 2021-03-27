@@ -23,6 +23,7 @@ import styles from "assets/jss/material-kit-react/views/loginPage.js";
 import image from "assets/img/bgmakeup.jpg";
 
 import { useHistory } from "react-router-dom";
+import LoginService from "services/loginService";
 
 const useStyles = makeStyles(styles);
 
@@ -38,8 +39,14 @@ export default function LoginPage(props) {
   const { ...rest } = props;
 
   const login = async () => {
-    if (email === "julioomuller@gmail.com" && senha === "123456")
+    let res = await new LoginService().Login({email,senha});
+    if(res.ok){
+      let data = res.json()
+      localStorage.setItem('token',data.token)
       history.push("/home")
+    }else{
+      alert('deu ruim')
+    }
   }
 
 
