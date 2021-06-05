@@ -29,7 +29,7 @@ namespace Ecommerceish.Web
             services.AddDependencies();
             services.AddAuthentication(Configuration);
 
-            var assembly = AppDomain.CurrentDomain.Load("Ecommerceish.Web");
+            var assembly = AppDomain.CurrentDomain.Load("Ecommerceish.Domain");
             services.AddMediatR(assembly);
 
             // In production, the React files will be served from this directory

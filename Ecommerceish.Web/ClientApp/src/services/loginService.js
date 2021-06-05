@@ -4,7 +4,6 @@ export default class LoginService {
     }
 
     async Login(usuario) {
-        debugger;
         return fetch(this.controller, {
             method: "post",
             headers: {

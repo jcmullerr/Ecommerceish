@@ -43,7 +43,7 @@ export default function LoginPage(props) {
     if(res.ok){
       let data = res.json()
       localStorage.setItem('token',data.token)
-      history.push("/home")
+      history.push("/produtos/listagem")
     }else{
       alert('deu ruim')
     }
@@ -113,7 +113,6 @@ export default function LoginPage(props) {
                         value: senha,
                         onChange: (e) => { setSenha(e.target.value) },
                         onKeyDown:(e) => {
-                          debugger
                           if(e.key === "Enter")
                             login()
                         }

@@ -5,6 +5,7 @@ using Ecommerceish.Domain.DomainServices;
 using Ecommerceish.Domain.Entities.Seguranca;
 using Ecommerceish.Domain.Command;
 using MediatR;
+using System;
 
 namespace Ecommerceish.Web.Controllers
 {
@@ -12,7 +13,7 @@ namespace Ecommerceish.Web.Controllers
     [Route("api/[controller]")]
     public class LoginController : ControllerBase
     {
-        private readonly IMediator  _mediator;
+        private readonly IMediator _mediator;
 
         public LoginController(IMediator mediator)
         {
@@ -21,16 +22,13 @@ namespace Ecommerceish.Web.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody]LoginCommand loginCommand)
+        public async Task<IActionResult> Login([FromBody] LoginCommand loginCommand)
         {
             var token = await _mediator.Send(loginCommand);
-            return Ok(new {token});
-        }
+            if (token == default)
+                return BadRequest(new { Erro = "Deu muita merda meu caro" });
 
-        [HttpGet]
-        public async Task<IActionResult> teste()
-        {
-            return Ok();
+            return Ok(new { token });
         }
     }
 }

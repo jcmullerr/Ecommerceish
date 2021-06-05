@@ -1,7 +1,7 @@
 const cardFooterStyle = {
   cardFooter: {
     display: "flex",
-    alignItems: "center",
+    flexDirection:"row-reverse",
     backgroundColor: "transparent",
     padding: "0.9375rem 1.875rem"
   }
