@@ -19,6 +19,36 @@ namespace Ecommerceish.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.4");
 
+            modelBuilder.Entity("Ecommerceish.Domain.Entities.Produtos.Produto", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataModificacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PercentualLucro")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ValorCusto")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Produtos");
+                });
+
             modelBuilder.Entity("Ecommerceish.Domain.Entities.Seguranca.Usuario", b =>
                 {
                     b.Property<long>("Id")
@@ -29,7 +59,7 @@ namespace Ecommerceish.Data.Migrations
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DataModificacao")
+                    b.Property<DateTime?>("DataModificacao")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -46,7 +76,7 @@ namespace Ecommerceish.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("usuarios");
+                    b.ToTable("Usuarios");
                 });
 #pragma warning restore 612, 618
         }

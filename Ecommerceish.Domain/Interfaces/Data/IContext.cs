@@ -7,7 +7,7 @@ namespace Ecommerceish.Domain.Interfaces.Data
 {
     public interface IContext
     {
-        DbSet<T> GetDbSet<T>() where T : BaseModel, new();
+        DbSet<T> GetDbSet<T>() where T : Entity, new();
         Task<int> SaveChanges(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

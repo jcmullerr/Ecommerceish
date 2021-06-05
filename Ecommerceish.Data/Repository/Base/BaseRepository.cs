@@ -10,13 +10,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerceish.Data.Repository.Base
 {
-    public class BaseRepository<T> : IRepository<T> where T : BaseModel, new()
+    public class BaseRepository<T> : IRepository<T> where T : Entity, new()
     {
         private readonly DbSet<T> _dbSet;
+        private readonly IContext _context;
 
         public BaseRepository(IContext context)
         {
             _dbSet = context.GetDbSet<T>();
+            _context = context;
         }
 
         public async Task<bool> Delete(long id)
@@ -24,7 +26,8 @@ namespace Ecommerceish.Data.Repository.Base
             try
             {
                 var data = await _dbSet.Where(x => x.Id == id).FirstOrDefaultAsync();
-                    _dbSet.Remove(data);
+                _dbSet.Remove(data);
+                await _context.SaveChanges();
 
             }
             catch (Exception ex)
@@ -53,6 +56,7 @@ namespace Ecommerceish.Data.Repository.Base
             try
             {
                 await _dbSet.AddAsync(model);
+                await _context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -67,6 +71,7 @@ namespace Ecommerceish.Data.Repository.Base
             try
             {
                 _dbSet.Update(model);
+                await _context.SaveChanges();
             }
             catch (Exception ex)
             {

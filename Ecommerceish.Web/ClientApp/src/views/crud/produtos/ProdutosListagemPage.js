@@ -82,7 +82,7 @@ export default function ProdutosListagemPage(props) {
       <Dialog open={abrirModal} onClose={() => setAbrirModal(false)}>
         <DialogTitle>Produtos</DialogTitle>
         <DialogContent>
-          <ProdutosCadastroPage />
+          <ProdutosCadastroPage setAbrirModal={setAbrirModal}/>
         </DialogContent>
       </Dialog>
 

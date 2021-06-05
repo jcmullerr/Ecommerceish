@@ -41,14 +41,13 @@ export default function LoginPage(props) {
   const login = async () => {
     let res = await new LoginService().Login({email,senha});
     if(res.ok){
-      let data = res.json()
+      let data = await res.json()
       localStorage.setItem('token',data.token)
       history.push("/produtos/listagem")
     }else{
       alert('deu ruim')
     }
   }
-
 
   return (
     <div>

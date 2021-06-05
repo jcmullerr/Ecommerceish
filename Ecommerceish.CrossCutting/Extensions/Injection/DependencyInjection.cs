@@ -1,5 +1,6 @@
 using Ecommerceish.Data.Repository.Base;
 using Ecommerceish.Domain.DomainServices;
+using Ecommerceish.Domain.Entities.Produtos;
 using Ecommerceish.Domain.Entities.Seguranca;
 using Ecommerceish.Domain.Interfaces.DomainServices;
 using Ecommerceish.Domain.Interfaces.Repositories;
@@ -13,6 +14,7 @@ namespace Ecommerceish.CrossCutting.Extensions.Injection
         {
             //Repository
             services.AddScoped<IRepository<Usuario>,BaseRepository<Usuario>>();
+            services.AddScoped<IRepository<Produto>,BaseRepository<Produto>>();
 
             //Domain Services
             services.AddScoped<IUsuarioDomainService,UsuarioDomainService>();
