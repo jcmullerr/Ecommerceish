@@ -44,8 +44,6 @@ export default function LoginPage(props) {
       let data = await res.json()
       localStorage.setItem('token',data.token)
       history.push("/produtos/listagem")
-    }else{
-      alert('deu ruim')
     }
   }
 

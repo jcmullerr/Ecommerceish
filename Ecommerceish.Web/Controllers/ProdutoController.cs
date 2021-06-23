@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ecommerceish.Domain.Command.Produtos.Adicionar;
 using Ecommerceish.Domain.Command.Produtos.Atualizar;
 using Ecommerceish.Domain.Command.Produtos.Obter;
+using Ecommerceish.Domain.Command.Produtos.Remover;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -64,9 +65,9 @@ namespace Ecommerceish.Web.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> RemoverProdutoAsync(AtualizarProdutoCommand command)
+        public async Task<IActionResult> RemoverProdutoAsync([FromRoute]RemoverProdutoCommand command)
         {
             var result = await _mediator.Send(command);
             if(!result)
