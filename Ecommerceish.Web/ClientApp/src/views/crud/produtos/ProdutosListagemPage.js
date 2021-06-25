@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -29,6 +29,7 @@ import { Search } from "@material-ui/icons";
 import navStyles from "assets/jss/material-kit-react/views/componentsSections/navbarsStyle.js";
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import ProdutosCadastroPage from "./ProdutosCadastroPage";
+import ProdutoService from "services/produtoService";
 
 const useStyles = makeStyles(styles);
 const useStylesImage = makeStyles(imagesStyles);
@@ -36,53 +37,59 @@ const useStylesHome = makeStyles(homeStyles);
 const useStylesNav = makeStyles(navStyles);
 
 export default function ProdutosListagemPage(props) {
+
+  const [state, setState] = useState({
+    produtos: [],
+    abrirModal: false,
+    modelEdicaoId: null
+  })
+
+  const carregarProdutos = async () => {
+
+    const res = await new ProdutoService().ListarProdutos()
+    if (res.ok) {
+      const data = await res.json()
+      data.forEach(x => x.imagem = image)
+      setState({ ...state, produtos: data })
+    }
+  }
+
+  const setModelEdicaoId = (modelId) => {
+    setState({ ...state, modelEdicaoId: modelId, abrirModal: true })
+  }
+
   const classes = useStyles();
-  const imageClasses = useStylesImage();
   const homeClasses = useStylesHome();
   const navClasss = useStylesNav();
 
-  const products = [
-    {
-      nome: "Base Mary Kay",
-      descricao: "Rebooc muito louco pra esconder as sardas de quem nao gosta ou até mais",
-      imagem: image
-    },
-    {
-      nome: "Base Mary Kay",
-      descricao: "Rebooc muito louco pra esconder as sardas de quem nao gosta ou até mais",
-      imagem: image
-    },
-    {
-      nome: "Base Mary Kay",
-      descricao: "Rebooc muito louco pra esconder as sardas de quem nao gosta ou até mais",
-      imagem: image
-    },
-    {
-      nome: "Base Mary Kay",
-      descricao: "Rebooc muito louco pra esconder as sardas de quem nao gosta ou até mais",
-      imagem: image
-    },
-    {
-      nome: "Base Mary Kay",
-      descricao: "Rebooc muito louco pra esconder as sardas de quem nao gosta ou até mais",
-      imagem: image
-    },
-    {
-      nome: "Base Mary Kay",
-      descricao: "Rebooc muito louco pra esconder as sardas de quem nao gosta ou até mais",
-      imagem: image
-    },
-  ]
   const { ...rest } = props;
 
-  const [abrirModal, setAbrirModal] = useState(false);
+  useEffect(() => {
+    async function fetchData() {
+      await carregarProdutos()
+    }
+
+    fetchData()
+  }, [])
+
+  useEffect(() => {
+    if (!state.abrirModal)
+      carregarProdutos()
+  }, [state.abrirModal])
+
+  const setAbrirModal = (abrir) => {
+    setState({ ...state, abrirModal: abrir })
+  }
 
   return (
     <div>
-      <Dialog open={abrirModal} onClose={() => setAbrirModal(false)}>
+      <Dialog open={state.abrirModal} onClose={async () => {
+        await carregarProdutos()
+        setState({ ...state, abrirModal: false, modelEdicaoId: null })
+      }}>
         <DialogTitle>Produtos</DialogTitle>
         <DialogContent>
-          <ProdutosCadastroPage setAbrirModal={setAbrirModal}/>
+          <ProdutosCadastroPage setAbrirModal={setAbrirModal} modelId={state.modelEdicaoId} atualizar={carregarProdutos} />
         </DialogContent>
       </Dialog>
 
@@ -159,7 +166,7 @@ export default function ProdutosListagemPage(props) {
           <div className={homeClasses.container}>
             <GridContainer>
               {
-                products.map((e, i) => <ProductCard model={e} key={i} />)
+                state.produtos.map((e, i) => <ProductCard model={e} key={i} atualizar={carregarProdutos} setModelId={setModelEdicaoId} />)
               }
             </GridContainer>
             <div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
@@ -180,5 +187,5 @@ export default function ProdutosListagemPage(props) {
         <Footer blackFont />
       </div>
     </div>
-  );
+  )
 }

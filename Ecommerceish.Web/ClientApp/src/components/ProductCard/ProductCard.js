@@ -13,23 +13,29 @@ import imagesStyles from "assets/jss/material-kit-react/imagesStyles";
 import homeStyles from "assets/jss/material-kit-react/views/homePage.js";
 
 import { useHistory } from "react-router-dom";
+import ProdutoService from "services/produtoService";
 
 const useStyles = makeStyles(styles);
 const useStylesImage = makeStyles(imagesStyles);
 const useStylesHome = makeStyles(homeStyles);
 
 export default function ProductCard(props) {
-  const [querComprar, setquerComprar] = useState(false);
   const classes = useStyles();
   const imageClasses = useStylesImage();
   const { ...rest } = props;
+
+  const apagarProduto = async () => {
+    const res = await new ProdutoService().ApagarProduto(props.model.id)
+    if(res.ok)
+        await props.atualizar()
+  }
+
   return (
     <GridItem md={3}>
       <Card >
         <form className={classes.form} >
           <CardBody onClick={() => {
-            if (!querComprar)
-              alert("Vai ir pro produto")
+            
           }}>
             <h3>{props.model.nome}</h3>
             <GridItem>
@@ -42,13 +48,10 @@ export default function ProductCard(props) {
             <p>{props.model.descricao}</p>
           </CardBody>
           <CardFooter className={classes.cardFooter}>
-            <Button simple color="primary" size="sm" onClick={async () => {
-              await setquerComprar(true)
-              alert("Quer comprar")
-            }}>
+            <Button simple color="primary" size="sm" onClick={() => props.setModelId(props.model.id)}>
               Editar
             </Button>
-            <Button simple color="danger" size="sm" >
+            <Button simple color="danger" size="sm" onClick={async () => await apagarProduto(true)}>
               Excluir
             </Button>
           </CardFooter>
