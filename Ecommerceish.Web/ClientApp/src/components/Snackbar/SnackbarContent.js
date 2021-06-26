@@ -19,7 +19,7 @@ export default function SnackbarContent(props) {
   const classes = useStyles();
   var action = [];
   const closeAlert = () => {
-    setAlert(null);
+    Promise.all([setAlert(null),props.onClick ? props.onClick() : ''])
   };
   if (close !== undefined) {
     action = [

@@ -16,6 +16,7 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
+import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
@@ -24,27 +25,44 @@ import image from "assets/img/bgmakeup.jpg";
 
 import { useHistory } from "react-router-dom";
 import LoginService from "services/loginService";
+import LoginForm from "./LoginForm";
+import LoginCadastroForm from "./LoginCadastroForm";
+import { Check } from "@material-ui/icons";
 
 const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-  const [email, setEmail] = React.useState("");
-  const [senha, setSenha] = React.useState("");
-  const history = useHistory();
+  const [exibirCadastro, setExibirCadastro] = React.useState(false)
+  const [erroLogin, setErroLogin] = React.useState(false)
   setTimeout(function () {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
 
-  const login = async () => {
-    let res = await new LoginService().Login({email,senha});
-    if(res.ok){
-      let data = await res.json()
-      localStorage.setItem('token',data.token)
-      history.push("/produtos/listagem")
-    }
+  const getFormulario = () => {
+    if (exibirCadastro)
+      return (<LoginCadastroForm setExibirCadastro={setExibirCadastro}></LoginCadastroForm>)
+
+    return (<LoginForm setExibirCadastro={setExibirCadastro} setErroLogin={setErroLogin}></LoginForm>)
+  }
+
+  const getLoginError = () => {
+    if (erroLogin)
+      return (
+        <SnackbarContent
+          message={
+            <span>
+              <b>ERRO:</b> Credencias inválidas.
+            </span>
+          }
+          close
+          color="danger"
+          icon={Check}
+          onClick={() => setErroLogin(false)}
+        />
+      )
   }
 
   return (
@@ -70,62 +88,10 @@ export default function LoginPage(props) {
             <GridItem xs={12} sm={12} md={4}>
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
-                  <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Login</h4>
-                  </CardHeader>
-                  <CardBody>
-                    <CustomInput
-                      labelText="Email..."
-                      id="email"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: "email",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Email className={classes.inputIconsColor} />
-                          </InputAdornment>
-                        ),
-                        value: email,
-                        onChange: (e) => { setEmail(e.target.value) }
-                      }}
-                    />
-                    <CustomInput
-                      labelText="Senha"
-                      id="pass"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: "password",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Icon className={classes.inputIconsColor}>
-                              lock_outline
-                            </Icon>
-                          </InputAdornment>
-                        ),
-                        autoComplete: "off",
-                        value: senha,
-                        onChange: (e) => { setSenha(e.target.value) },
-                        onKeyDown:(e) => {
-                          if(e.key === "Enter")
-                            login()
-                        }
-                      }}
-                    />
-                  </CardBody>
-                  <CardFooter className={classes.cardFooter}>
-                    <Button simple color="primary" size="lg" onClick={login}>
-                      Login
-                    </Button>
-                    <Button simple color="primary" size="lg">
-                      Cadastre-se
-                    </Button>
-                  </CardFooter>
+                  {getFormulario()}
                 </form>
               </Card>
+              {getLoginError()}
             </GridItem>
           </GridContainer>
         </div>

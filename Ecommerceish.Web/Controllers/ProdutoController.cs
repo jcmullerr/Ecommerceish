@@ -25,10 +25,7 @@ namespace Ecommerceish.Web.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> ListarProdutosAsync()
         {
-            var result = await _mediator.Send(new ListarProdutosCommand());
-            if(result == default || result.Count() == 0)
-                return NotFound(new {Message = "Produto não encontrado"});
-            
+            var result = await _mediator.Send(new ListarProdutosCommand());            
             return Ok(result);
         }
 

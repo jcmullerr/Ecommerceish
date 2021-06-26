@@ -1,11 +1,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Ecommerceish.Domain.DomainServices;
-using Ecommerceish.Domain.Entities.Seguranca;
 using Ecommerceish.Domain.Command;
 using MediatR;
-using System;
+using Ecommerceish.Domain.Command.Login;
 
 namespace Ecommerceish.Web.Controllers
 {
@@ -26,9 +24,20 @@ namespace Ecommerceish.Web.Controllers
         {
             var token = await _mediator.Send(loginCommand);
             if (token == default)
-                return BadRequest(new { Erro = "Deu muita merda meu caro" });
+                return BadRequest(new { Erro = "Credenciais incorretas" });
 
             return Ok(new { token });
+        }
+
+        [HttpPost("cadastro")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CadastrarUsuario([FromBody] CadastrarLoginUsuarioCommand cadastrarLoginUsuarioCommand)
+        {
+            var token = await _mediator.Send(cadastrarLoginUsuarioCommand);
+            if (token == default)
+                return BadRequest(new { Erro = "Não foi possivel cadastrar o usuario" });
+
+            return Ok();
         }
     }
 }
